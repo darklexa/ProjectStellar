@@ -56,6 +56,15 @@ soroban contract deploy --network testnet target/wasm32v1-none/release/micro_len
 
 **Contract Address:** `
 
+## Frontend
+
+1. Open the repo in VS Code or any editor.  
+2. `cd frontend`  
+3. `npm install`  
+4. `npm start`  
+5. Visit http://localhost:3000 to interact with your contract.
+
+
 ---
 
 ## Mascot Logo
