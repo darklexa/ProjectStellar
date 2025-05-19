@@ -1,0 +1,36 @@
+name: Build & Deploy Soroban Contract
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    env:
+      SOROBAN_SECRET_SEED: ${{ secrets.TESTNET_SECRET_SEED }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Rust & target
+        run: |
+          curl https://sh.rustup.rs -sSf | sh -s -- -y
+          source $HOME/.cargo/env
+          rustup target add wasm32v1-none
+
+      - name: Install Soroban CLI
+        run: |
+          source $HOME/.cargo/env
+          cargo install soroban-cli --locked
+
+      - name: Build WASM
+        run: |
+          source $HOME/.cargo/env
+          soroban contract build
+
+      - name: Deploy to Testnet
+        run: |
+          source $HOME/.cargo/env
+          soroban contract deploy \
+            --network testnet \
+            target/wasm32v1-none/release/micro_lending.wasm
